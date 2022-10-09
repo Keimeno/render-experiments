@@ -1,5 +1,7 @@
 import * as THREE from "three";
 
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
 import rightImageFace from "./assets/park_parking_4k.right.png";
 import leftImageFace from "./assets/park_parking_4k.left.png";
 import upImageFace from "./assets/park_parking_4k.up.png";
@@ -34,10 +36,10 @@ const renderController = (() => {
   const skyboxGeometry = new THREE.BoxGeometry(10000, 10000, 10000);
   const skybox = new THREE.Mesh(skyboxGeometry, materialArray);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
+  const controls = new OrbitControls(camera, renderer.domElement);
 
   const animate = () => {
-    skybox.rotation.x += -0.001;
-    skybox.rotation.y += 0.0005;
+    controls.update();
 
     renderer.render(scene, camera);
 
@@ -46,11 +48,17 @@ const renderController = (() => {
 
   return {
     init: () => {
-      camera.position.set(0, 0, 0);
+      camera.position.set(2000, 0, 5000);
 
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.domElement.id = "canvas";
       document.body.appendChild(renderer.domElement);
+
+      controls.rotateSpeed = -0.25;
+      controls.target.set(0, 0, 0);
+      controls.minDistance = 700;
+      controls.maxDistance = 1500;
+      controls.enableZoom = false;
 
       scene.add(skybox);
 
