@@ -1,0 +1,118 @@
+:root {
+  /* fov: 1 (lowest) - 10 (highest) */
+  --fov: 5;
+
+  --skybox-size: 1024px;
+  --skybox-gap-offset: 0.998;
+
+  --face-size: 2048px;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+}
+
+.skybox {
+  margin: auto;
+  width: 100vw;
+  height: var(--skybox-size);
+  overflow: hidden;
+  -webkit-perspective: 650;
+  perspective: 650;
+}
+
+.skybox__wrapper {
+  position: relative;
+  cursor: pointer;
+
+  /* fov */
+  transform: translateZ(calc(100px * (10 - var(--fov))));
+  transform-style: preserve-3d;
+}
+
+.skybox__rotor--x,
+.skybox__rotor--y {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.skybox__faces {
+  position: relative;
+  width: 0;
+  height: 0;
+  top: var(--skybox-size);
+  margin: 0 auto;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.skybox__face {
+  position: absolute;
+  display: block;
+  width: calc(var(--skybox-size) * 2);
+  height: calc(var(--skybox-size) * 2);
+  left: calc(var(--skybox-size) * -1);
+  top: calc((var(--skybox-size) * 2) * -1);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.skybox__face--back {
+  transform: translate3d(
+      calc((var(--skybox-size) * var(--skybox-gap-offset)) * -1),
+      0,
+      0
+    )
+    rotate3d(0, 1, 0, 90deg);
+}
+
+.skybox__face--front {
+  transform: translate3d(
+      calc(var(--skybox-size) * var(--skybox-gap-offset)),
+      0,
+      0
+    )
+    rotate3d(0, 1, 0, -90deg);
+}
+
+.skybox__face--right {
+  transform: rotate3d(0, 1, 0, 180deg)
+    translate3d(
+      0,
+      0,
+      calc((var(--skybox-size) * var(--skybox-gap-offset)) * -1)
+    );
+}
+
+.skybox__face--left {
+  transform: translate3d(
+    0,
+    0,
+    calc((var(--skybox-size) * var(--skybox-gap-offset)) * -1)
+  );
+}
+
+.skybox__face--up {
+  transform: translate3d(
+      0,
+      calc((var(--skybox-size) * var(--skybox-gap-offset)) * -1),
+      0
+    )
+    rotate3d(1, 0, 0, -90deg) rotate3d(0, 0, 1, -90deg);
+}
+
+.skybox__face--down {
+  transform: translate3d(
+      0,
+      calc(var(--skybox-size) * var(--skybox-gap-offset)),
+      0
+    )
+    rotate3d(1, 0, 0, 90deg) rotate3d(0, 0, 1, 90deg);
+}
